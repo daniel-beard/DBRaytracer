@@ -8,33 +8,19 @@
 
 import Foundation
 
-struct Color {
-    let red: Double
-    let green: Double
-    let blue: Double
-    init(_ red: Double, _ green: Double, _ blue: Double) {
-        self.red = red
-        self.blue = blue
-        self.green = green
-        if (red < 0 || red > 1 || green < 0 || green > 1 || blue < 0 || blue > 1) {
-            fatalError("Color values must be within 0..<1")
-        }
-    }
-}
-
 class PixelArray {
 
-    fileprivate var matrix: [[Color]]
+    fileprivate var matrix: [[Vector3]]
     let width: Int
     let height: Int
 
     init(width: Int, height: Int) {
         self.width = width
         self.height = height
-        matrix = [[Color]](repeating:[Color](repeating:Color(0, 0, 0), count:width), count:height)
+        matrix = [[Vector3]](repeating:[Vector3](repeating:Vector3(0, 0, 0), count:width), count:height)
     }
 
-    subscript(row: Int, col: Int) -> Color? {
+    subscript(row: Int, col: Int) -> Vector3? {
         get {
             return matrix[col][row]
         }
@@ -60,6 +46,13 @@ extension PixelArray: CustomStringConvertible {
 
 // Image output
 extension PixelArray {
+
+    func colorFromRay(ray: Ray) -> Vector3 {
+        let unitDirection = ray.direction.unitVector()
+        let t: Scalar = 0.5 * (unitDirection.y + 1.0)
+        return (1.0 - t) * Vector3(1, 1, 1) + t * Vector3(0.5, 0.7, 1.0)
+    }
+
     func ppmImage() -> String {
 
         //TODO: Only for testing
@@ -68,15 +61,24 @@ extension PixelArray {
 
         let maxColorValue = "255"
         var output = "P3\n\(width) \(height)\n\(maxColorValue)\n"
+
+        let lowerLeftCorner = Vector3(-2.0, -1.0, -1.0)
+        let horizontal = Vector3(4.0, 0.0, 0.0)
+        let vertical = Vector3(0.0, 2.0, 0.0)
+        let origin = Vector3(0.0, 0.0, 0.0)
+
         for j in (0..<height).reversed() {
             for i in 0..<width {
-                let r: Double = Double(i) / Double(width)
-                let g: Double = Double(j) / Double(height)
-                let b: Double = 0.2
 
-                let ir = Int(255.99*r)
-                let ig = Int(255.99*g)
-                let ib = Int(255.9*b)
+                let u = Scalar(i) / Scalar(width)
+                let v = Scalar(j) / Scalar(height)
+                let ray = Ray(origin: origin, direction: lowerLeftCorner + u * horizontal + v * vertical)
+                let color = colorFromRay(ray: ray).toArray()
+
+                let ir = Int(255.99*color[0])
+                let ig = Int(255.99*color[1])
+                let ib = Int(255.99*color[2])
+
                 output += "\(ir) \(ig) \(ib)\n"
             }
         }

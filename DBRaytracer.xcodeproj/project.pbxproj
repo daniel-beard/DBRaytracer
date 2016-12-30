@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		24239CEA1E15FEB700EB596D /* VectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CE71E15FEB700EB596D /* VectorMath.swift */; };
+		24239CEB1E15FEB700EB596D /* VectorMath+Quartz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CE81E15FEB700EB596D /* VectorMath+Quartz.swift */; };
+		24239CEC1E15FEB700EB596D /* VectorMath+SceneKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CE91E15FEB700EB596D /* VectorMath+SceneKit.swift */; };
+		24239CEE1E16F29200EB596D /* Ray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CED1E16F29200EB596D /* Ray.swift */; };
 		24A4A8E51E15FBAF002645E4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A4A8E41E15FBAF002645E4 /* main.swift */; };
 		24A4A8EC1E15FBC2002645E4 /* PixelArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A4A8EB1E15FBC2002645E4 /* PixelArray.swift */; };
 /* End PBXBuildFile section */
@@ -24,6 +28,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		24239CE71E15FEB700EB596D /* VectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorMath.swift; sourceTree = "<group>"; };
+		24239CE81E15FEB700EB596D /* VectorMath+Quartz.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VectorMath+Quartz.swift"; sourceTree = "<group>"; };
+		24239CE91E15FEB700EB596D /* VectorMath+SceneKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VectorMath+SceneKit.swift"; sourceTree = "<group>"; };
+		24239CED1E16F29200EB596D /* Ray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ray.swift; sourceTree = "<group>"; };
 		24A4A8E11E15FBAF002645E4 /* DBRaytracer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DBRaytracer; sourceTree = BUILT_PRODUCTS_DIR; };
 		24A4A8E41E15FBAF002645E4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		24A4A8EB1E15FBC2002645E4 /* PixelArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixelArray.swift; sourceTree = "<group>"; };
@@ -40,6 +48,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		24239CE51E15FE7900EB596D /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				24239CE61E15FE8200EB596D /* VectorMath */,
+			);
+			name = ThirdParty;
+			sourceTree = "<group>";
+		};
+		24239CE61E15FE8200EB596D /* VectorMath */ = {
+			isa = PBXGroup;
+			children = (
+				24239CE71E15FEB700EB596D /* VectorMath.swift */,
+				24239CE81E15FEB700EB596D /* VectorMath+Quartz.swift */,
+				24239CE91E15FEB700EB596D /* VectorMath+SceneKit.swift */,
+			);
+			name = VectorMath;
+			sourceTree = "<group>";
+		};
 		24A4A8D81E15FBAF002645E4 = {
 			isa = PBXGroup;
 			children = (
@@ -59,7 +85,9 @@
 		24A4A8E31E15FBAF002645E4 /* DBRaytracer */ = {
 			isa = PBXGroup;
 			children = (
+				24239CE51E15FE7900EB596D /* ThirdParty */,
 				24A4A8EB1E15FBC2002645E4 /* PixelArray.swift */,
+				24239CED1E16F29200EB596D /* Ray.swift */,
 				24A4A8E41E15FBAF002645E4 /* main.swift */,
 			);
 			path = DBRaytracer;
@@ -123,7 +151,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24239CEC1E15FEB700EB596D /* VectorMath+SceneKit.swift in Sources */,
 				24A4A8EC1E15FBC2002645E4 /* PixelArray.swift in Sources */,
+				24239CEE1E16F29200EB596D /* Ray.swift in Sources */,
+				24239CEB1E15FEB700EB596D /* VectorMath+Quartz.swift in Sources */,
+				24239CEA1E15FEB700EB596D /* VectorMath.swift in Sources */,
 				24A4A8E51E15FBAF002645E4 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -254,6 +286,7 @@
 				24A4A8EA1E15FBAF002645E4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
