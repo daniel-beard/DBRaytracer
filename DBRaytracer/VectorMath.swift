@@ -331,7 +331,7 @@ extension Vector3: Equatable, Hashable {
     public static func +(lhs: Vector3, rhs: Vector3) -> Vector3 {
         return Vector3(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z)
     }
-    
+
     public static func -(lhs: Vector3, rhs: Vector3) -> Vector3 {
         return Vector3(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z)
     }
