@@ -11,6 +11,9 @@
 		24239CEB1E15FEB700EB596D /* VectorMath+Quartz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CE81E15FEB700EB596D /* VectorMath+Quartz.swift */; };
 		24239CEC1E15FEB700EB596D /* VectorMath+SceneKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CE91E15FEB700EB596D /* VectorMath+SceneKit.swift */; };
 		24239CEE1E16F29200EB596D /* Ray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CED1E16F29200EB596D /* Ray.swift */; };
+		24239CF01E17094200EB596D /* Hitable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CEF1E17094200EB596D /* Hitable.swift */; };
+		24239CF31E1709A500EB596D /* Sphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CF21E1709A500EB596D /* Sphere.swift */; };
+		24239CF51E170BC600EB596D /* HitableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CF41E170BC600EB596D /* HitableList.swift */; };
 		24A4A8E51E15FBAF002645E4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A4A8E41E15FBAF002645E4 /* main.swift */; };
 		24A4A8EC1E15FBC2002645E4 /* PixelArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A4A8EB1E15FBC2002645E4 /* PixelArray.swift */; };
 /* End PBXBuildFile section */
@@ -32,6 +35,9 @@
 		24239CE81E15FEB700EB596D /* VectorMath+Quartz.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VectorMath+Quartz.swift"; sourceTree = "<group>"; };
 		24239CE91E15FEB700EB596D /* VectorMath+SceneKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VectorMath+SceneKit.swift"; sourceTree = "<group>"; };
 		24239CED1E16F29200EB596D /* Ray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ray.swift; sourceTree = "<group>"; };
+		24239CEF1E17094200EB596D /* Hitable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hitable.swift; sourceTree = "<group>"; };
+		24239CF21E1709A500EB596D /* Sphere.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sphere.swift; sourceTree = "<group>"; };
+		24239CF41E170BC600EB596D /* HitableList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HitableList.swift; sourceTree = "<group>"; };
 		24A4A8E11E15FBAF002645E4 /* DBRaytracer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DBRaytracer; sourceTree = BUILT_PRODUCTS_DIR; };
 		24A4A8E41E15FBAF002645E4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		24A4A8EB1E15FBC2002645E4 /* PixelArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixelArray.swift; sourceTree = "<group>"; };
@@ -66,6 +72,16 @@
 			name = VectorMath;
 			sourceTree = "<group>";
 		};
+		24239CF11E17099300EB596D /* Geometry */ = {
+			isa = PBXGroup;
+			children = (
+				24239CEF1E17094200EB596D /* Hitable.swift */,
+				24239CF41E170BC600EB596D /* HitableList.swift */,
+				24239CF21E1709A500EB596D /* Sphere.swift */,
+			);
+			name = Geometry;
+			sourceTree = "<group>";
+		};
 		24A4A8D81E15FBAF002645E4 = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +105,7 @@
 				24A4A8EB1E15FBC2002645E4 /* PixelArray.swift */,
 				24239CED1E16F29200EB596D /* Ray.swift */,
 				24A4A8E41E15FBAF002645E4 /* main.swift */,
+				24239CF11E17099300EB596D /* Geometry */,
 			);
 			path = DBRaytracer;
 			sourceTree = "<group>";
@@ -151,11 +168,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24239CF51E170BC600EB596D /* HitableList.swift in Sources */,
 				24239CEC1E15FEB700EB596D /* VectorMath+SceneKit.swift in Sources */,
 				24A4A8EC1E15FBC2002645E4 /* PixelArray.swift in Sources */,
 				24239CEE1E16F29200EB596D /* Ray.swift in Sources */,
 				24239CEB1E15FEB700EB596D /* VectorMath+Quartz.swift in Sources */,
+				24239CF01E17094200EB596D /* Hitable.swift in Sources */,
 				24239CEA1E15FEB700EB596D /* VectorMath.swift in Sources */,
+				24239CF31E1709A500EB596D /* Sphere.swift in Sources */,
 				24A4A8E51E15FBAF002645E4 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
