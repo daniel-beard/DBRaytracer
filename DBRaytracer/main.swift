@@ -8,14 +8,6 @@
 
 import Foundation
 
-
-var pixels = PixelArray(width: 2, height: 2)
-pixels[1, 0] = Vector3(0.5, 0.5, 0.5)
-print(pixels)
-
-
-
-
 // Camera center will be at (0,0,0)
 // Y-axis goes up
 // X-axis goes to the right
@@ -28,11 +20,25 @@ func frand48() -> Scalar {
     return Scalar(drand48())
 }
 
+// Picks a random point in a unit radius sphere, centered at the origin.
+// This is a rejection method, we pick a random point in the unit cube where
+// x,y,z all range from -1 to 1
+// Reject if the point is outside the sphere and try again
+func randomInUnitSphere() -> Vector3 {
+    var p: Vector3
+    repeat {
+        p = 2.0*Vector3(frand48(), frand48(), frand48()) - Vector3(1,1,1)
+    } while p.lengthSquared >= 1
+    return p
+}
+
 func colorFromRay(ray: Ray, world: Hitable) -> Vector3 {
 
     var hitRecord = HitRecord()
-    if world.hit(ray: ray, t_min: 0.0, t_max: FLOAT_MAX, hit_record: &hitRecord) {
-        return 0.5*Vector3(hitRecord.normal.x + 1, hitRecord.normal.y + 1, hitRecord.normal.z + 1)
+    if world.hit(ray: ray, t_min: 0.001, t_max: FLOAT_MAX, hit_record: &hitRecord) {
+        let target = hitRecord.p + hitRecord.normal + randomInUnitSphere()
+        // Diffuse material.
+        return 0.5 * colorFromRay(ray: Ray(origin: hitRecord.p, direction: target - hitRecord.p), world: world)
     } else {
         // Background color
         let unitDirection = ray.direction.unitVector()
@@ -77,6 +83,9 @@ func ppmImage() -> String {
             }
 
             color = color / Scalar(samples)
+
+            // gamma2, we want to raise the gamma by 1/2 to lighten up the image.
+            color = Vector3(sqrt(color.r()), sqrt(color.g()), sqrt(color.b()))
             let colorArray = color.toArray()
 
             let ir = Int(255.99*colorArray[0])
@@ -90,8 +99,9 @@ func ppmImage() -> String {
     return output
 }
 
+let startDate = Date()
 let image = ppmImage()
 try! image.write(toFile: "/Users/dbeard/output.ppm", atomically: true, encoding: .ascii)
-
-
-//#warning At the start of Chapter 3...
+let endDate = Date()
+let timeInterval = endDate.timeIntervalSince(startDate)
+print("Finished! Took \(timeInterval) seconds")

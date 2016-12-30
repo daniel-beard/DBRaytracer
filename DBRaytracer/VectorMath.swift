@@ -47,6 +47,10 @@ public struct Vector3 {
     public var x: Scalar
     public var y: Scalar
     public var z: Scalar
+
+    func r() -> Scalar { return self.x }
+    func g() -> Scalar { return self.y }
+    func b() -> Scalar { return self.z }
 }
 
 public struct Vector4 {
