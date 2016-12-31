@@ -32,13 +32,19 @@ func randomInUnitSphere() -> Vector3 {
     return p
 }
 
-func colorFromRay(ray: Ray, world: Hitable) -> Vector3 {
+func colorFromRay(ray: Ray, world: Hitable, depth: Int) -> Vector3 {
 
     var hitRecord = HitRecord()
     if world.hit(ray: ray, t_min: 0.001, t_max: FLOAT_MAX, hit_record: &hitRecord) {
-        let target = hitRecord.p + hitRecord.normal + randomInUnitSphere()
-        // Diffuse material.
-        return 0.5 * colorFromRay(ray: Ray(origin: hitRecord.p, direction: target - hitRecord.p), world: world)
+
+        var scattered = Ray()
+        var attenuation = Vector3.zero
+
+        if depth < 50 && hitRecord.material?.scatter(ray: ray, hitRecord: hitRecord, attenuation: &attenuation, scattered: &scattered) ?? false {
+            return attenuation * colorFromRay(ray: scattered, world: world, depth: depth+1)
+        } else {
+            return Vector3.zero
+        }
     } else {
         // Background color
         let unitDirection = ray.direction.unitVector()
@@ -61,8 +67,10 @@ func ppmImage() -> String {
     var output = "P3\n\(width) \(height)\n\(maxColorValue)\n"
 
     let world = HitableList(array: [
-        Sphere(center: Vector3(0,0,-1), radius: 0.5),
-        Sphere(center: Vector3(0,-100.5,-1), radius: 100)
+        Sphere(center: Vector3(0,0,-1), radius: 0.5, material: Lambertian(albedo: Vector3(0.8, 0.3, 0.3))),
+        Sphere(center: Vector3(0,-100.5,-1), radius: 100, material: Lambertian(albedo: Vector3(0.8, 0.8, 0.0))),
+        Sphere(center: Vector3(1,0,-1), radius: 0.5, material: Metal(albedo: Vector3(0.8, 0.6, 0.2))),
+        Sphere(center: Vector3(-1,0,-1), radius: 0.5, material: Metal(albedo: Vector3(0.8, 0.8, 0.8)))
     ])
 
     let camera = Camera()
@@ -79,7 +87,7 @@ func ppmImage() -> String {
                 let v = (sj + frand48()) / Scalar(height)
                 let ray = camera.getRay(u: u, v: v)
                 //let p = ray.pointAtParameter(t: 2.0)
-                color = color + colorFromRay(ray: ray, world: world)
+                color = color + colorFromRay(ray: ray, world: world, depth: 0)
             }
 
             color = color / Scalar(samples)
@@ -105,3 +113,4 @@ try! image.write(toFile: "/Users/dbeard/output.ppm", atomically: true, encoding:
 let endDate = Date()
 let timeInterval = endDate.timeIntervalSince(startDate)
 print("Finished! Took \(timeInterval) seconds")
+

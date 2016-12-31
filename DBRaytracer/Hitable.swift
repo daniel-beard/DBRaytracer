@@ -12,6 +12,7 @@ struct HitRecord {
     var t: Scalar
     var p: Vector3
     var normal: Vector3
+    var material: Material?
 
     init() {
         t = 0
@@ -23,6 +24,13 @@ struct HitRecord {
         self.t = t
         self.p = p
         self.normal = normal
+    }
+
+    init(t: Scalar, p: Vector3, normal: Vector3, material: Material) {
+        self.t = t
+        self.p = p
+        self.normal = normal
+        self.material = material
     }
 }
 

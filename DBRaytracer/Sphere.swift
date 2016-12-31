@@ -12,10 +12,12 @@ class Sphere {
 
     fileprivate let center: Vector3
     fileprivate let radius: Scalar
+    fileprivate let material: Material
 
-    init(center: Vector3, radius: Scalar) {
+    init(center: Vector3, radius: Scalar, material: Material) {
         self.center = center
         self.radius = radius
+        self.material = material
     }
 }
 
@@ -32,6 +34,7 @@ extension Sphere: Hitable {
                 hit_record.t = temp
                 hit_record.p = ray.pointAtParameter(t: hit_record.t)
                 hit_record.normal = (hit_record.p - center) / radius
+                hit_record.material = material
                 return true
             }
             temp = (-b + sqrt(b*b-a*c)) / a
@@ -39,6 +42,7 @@ extension Sphere: Hitable {
                 hit_record.t = temp
                 hit_record.p = ray.pointAtParameter(t: hit_record.t)
                 hit_record.normal = (hit_record.p - center) / radius
+                hit_record.material = material
                 return true
             }
         }

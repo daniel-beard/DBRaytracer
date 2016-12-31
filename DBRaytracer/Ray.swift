@@ -13,6 +13,10 @@ final class Ray {
     let origin: Vector3
     let direction: Vector3
 
+    init() {
+        self.origin = Vector3.zero
+        self.direction = Vector3.zero
+    }
 
     init(origin: Vector3, direction: Vector3) {
         self.origin = origin
