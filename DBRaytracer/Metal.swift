@@ -10,9 +10,15 @@ import Foundation
 
 class Metal {
     fileprivate let albedo: Vector3
+    fileprivate let fuzz: Scalar
 
-    init(albedo: Vector3) {
+    init(albedo: Vector3, fuzz: Scalar) {
         self.albedo = albedo
+        if fuzz < 1 {
+            self.fuzz = fuzz
+        } else {
+            self.fuzz = 1
+        }
     }
 }
 
@@ -24,7 +30,7 @@ extension Metal: Material {
 
     func scatter(ray: Ray, hitRecord: HitRecord, attenuation: inout Vector3, scattered: inout Ray) -> Bool {
         let reflected = reflect(v: ray.direction.unitVector(), n: hitRecord.normal)
-        scattered = Ray(origin: hitRecord.p, direction: reflected)
+        scattered = Ray(origin: hitRecord.p, direction: reflected + fuzz * randomInUnitSphere())
         attenuation = albedo
         return scattered.direction.dot(hitRecord.normal) > 0
     }
