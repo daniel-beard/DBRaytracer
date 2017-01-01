@@ -105,11 +105,17 @@ func ppmImage() -> String {
 //        Sphere(center: Vector3(R,0,-1), radius: R, material: Lambertian(albedo: Vector3(1,0,0))),
     ])
 
-    let camera = Camera(lookFrom: Vector3(-2,2,1),
-                        lookAt: Vector3(0,0,-1),
+    let lookFrom = Vector3(3,3,2)
+    let lookAt = Vector3(0,0,-1)
+    let distToFocus = (lookFrom - lookAt).length
+    let aperture = Scalar(2.0)
+    let camera = Camera(lookFrom: lookFrom,
+                        lookAt: lookAt,
                         viewUp: Vector3(0,1,0),
-                        verticalFOV: 90,
-                        aspect: Scalar(Scalar(width) / Scalar(height)))
+                        verticalFOV: 20,
+                        aspect: Scalar(Scalar(width) / Scalar(height)),
+                        aperture: aperture,
+                        focusDistance: distToFocus)
     for j in (0..<height).reversed() {
         for i in 0..<width {
 
@@ -120,7 +126,7 @@ func ppmImage() -> String {
             for _ in 0..<samples {
                 let u = (si + frand48()) / Scalar(width)
                 let v = (sj + frand48()) / Scalar(height)
-                let ray = camera.getRay(u: u, v: v)
+                let ray = camera.getRay(s: u, t: v)
                 //let p = ray.pointAtParameter(t: 2.0)
                 color = color + colorFromRay(ray: ray, world: world, depth: 0)
             }
