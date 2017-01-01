@@ -74,6 +74,60 @@ func colorFromRay(ray: Ray, world: Hitable, depth: Int) -> Vector3 {
     }
 }
 
+func randomScene() -> HitableList {
+    var list = [Hitable]()
+    list.append(Sphere(center: Vector3(0, -1000, 0), radius: 1000, material: Lambertian(albedo: Vector3(0.5, 0.5, 0.5))))
+
+    for a in stride(from: -11, to: 10, by: 1) {
+        for b in stride(from: -11, to: 10, by: 1) {
+            let chooseMat = frand48()
+            let center = Vector3(Scalar(a)+0.9*frand48(), 0.2, Scalar(b)+0.9*frand48())
+            if (center - Vector3(4,0.2,0)).length > 0.9 {
+                // diffuse
+                if chooseMat < 0.8 {
+                    list.append(
+                        Sphere(center: center,
+                               radius: 0.2,
+                               material: Lambertian(albedo: Vector3(frand48()*frand48(), frand48()*frand48(), frand48()*frand48())))
+                    )
+                // metal
+                } else if chooseMat < 0.95 {
+                    list.append(
+                        Sphere(center: center,
+                               radius: 0.2,
+                               material: Metal(albedo: Vector3(0.5*(1+frand48()), 0.5*(1+frand48()), 0.5*(1+frand48())), fuzz: 0.5*frand48()))
+                    )
+                // glass
+                } else {
+                    list.append(
+                        Sphere(center: center,
+                               radius: 0.2,
+                               material: Dialetric(reflectiveIndex: 1.5))
+                    )
+                }
+            }
+        }
+    }
+    list.append(
+        Sphere(center: Vector3(0,1,0),
+               radius: 1.0,
+               material: Dialetric(reflectiveIndex: 1.5))
+    )
+    list.append(
+        Sphere(center: Vector3(-4,1,0),
+               radius: 1.0,
+               material: Lambertian(albedo: Vector3(0.4,0.2,0.1)))
+        )
+    list.append(
+        Sphere(center: Vector3(4,1,0),
+               radius: 1.0,
+               material:
+            Metal(albedo: Vector3(0.7,0.6,0.5), fuzz: 0.0))
+    )
+    return HitableList(array: list)
+
+}
+
 func ppmImage() -> String {
 
     //TODO: Only for testing
@@ -87,28 +141,30 @@ func ppmImage() -> String {
     let maxColorValue = "255"
     var output = "P3\n\(width) \(height)\n\(maxColorValue)\n"
 
-    let R = Scalar(cos(Scalar(M_PI)/4))
-    let world = HitableList(array: [
-        Sphere(center: Vector3(0,0,-1),
-               radius: 0.5,
-               material: Lambertian(albedo: Vector3(0.1, 0.2, 0.5))),
-        Sphere(center: Vector3(0,-100.5,-1),
-               radius: 100,
-               material: Lambertian(albedo: Vector3(0.8, 0.8, 0.0))),
-        Sphere(center: Vector3(1,0,-1),
-               radius: 0.5, material:
-            Metal(albedo: Vector3(0.8, 0.6, 0.2), fuzz: 0.3)),
-        Sphere(center: Vector3(-1,0,-1),
-               radius: -0.45,
-               material: Dialetric(reflectiveIndex: 1.5))
-//        Sphere(center: Vector3(-R,0,-1), radius: R, material: Lambertian(albedo: Vector3(0,0,1))),
-//        Sphere(center: Vector3(R,0,-1), radius: R, material: Lambertian(albedo: Vector3(1,0,0))),
-    ])
+//    let R = Scalar(cos(Scalar(M_PI)/4))
+//    let world = HitableList(array: [
+//        Sphere(center: Vector3(0,0,-1),
+//               radius: 0.5,
+//               material: Lambertian(albedo: Vector3(0.1, 0.2, 0.5))),
+//        Sphere(center: Vector3(0,-100.5,-1),
+//               radius: 100,
+//               material: Lambertian(albedo: Vector3(0.8, 0.8, 0.0))),
+//        Sphere(center: Vector3(1,0,-1),
+//               radius: 0.5, material:
+//            Metal(albedo: Vector3(0.8, 0.6, 0.2), fuzz: 0.3)),
+//        Sphere(center: Vector3(-1,0,-1),
+//               radius: -0.45,
+//               material: Dialetric(reflectiveIndex: 1.5))
+////        Sphere(center: Vector3(-R,0,-1), radius: R, material: Lambertian(albedo: Vector3(0,0,1))),
+////        Sphere(center: Vector3(R,0,-1), radius: R, material: Lambertian(albedo: Vector3(1,0,0))),
+//    ])
 
-    let lookFrom = Vector3(3,3,2)
-    let lookAt = Vector3(0,0,-1)
-    let distToFocus = (lookFrom - lookAt).length
-    let aperture = Scalar(2.0)
+    let world = randomScene()
+
+    let lookFrom = Vector3(13,2,3)
+    let lookAt = Vector3(0,0,0)
+    let distToFocus = Scalar(10)
+    let aperture = Scalar(0.1)
     let camera = Camera(lookFrom: lookFrom,
                         lookAt: lookAt,
                         viewUp: Vector3(0,1,0),
