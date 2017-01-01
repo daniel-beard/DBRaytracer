@@ -87,6 +87,7 @@ func ppmImage() -> String {
     let maxColorValue = "255"
     var output = "P3\n\(width) \(height)\n\(maxColorValue)\n"
 
+    let R = Scalar(cos(Scalar(M_PI)/4))
     let world = HitableList(array: [
         Sphere(center: Vector3(0,0,-1),
                radius: 0.5,
@@ -100,10 +101,15 @@ func ppmImage() -> String {
         Sphere(center: Vector3(-1,0,-1),
                radius: -0.45,
                material: Dialetric(reflectiveIndex: 1.5))
+//        Sphere(center: Vector3(-R,0,-1), radius: R, material: Lambertian(albedo: Vector3(0,0,1))),
+//        Sphere(center: Vector3(R,0,-1), radius: R, material: Lambertian(albedo: Vector3(1,0,0))),
     ])
 
-    let camera = Camera()
-
+    let camera = Camera(lookFrom: Vector3(-2,2,1),
+                        lookAt: Vector3(0,0,-1),
+                        viewUp: Vector3(0,1,0),
+                        verticalFOV: 90,
+                        aspect: Scalar(Scalar(width) / Scalar(height)))
     for j in (0..<height).reversed() {
         for i in 0..<width {
 

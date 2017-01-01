@@ -15,11 +15,23 @@ class Camera {
     fileprivate let horizontal: Vector3
     fileprivate let vertical: Vector3
 
-    init() {
-        lowerLeftCorner = Vector3(-2.0, -1.0, -1.0)
-        horizontal = Vector3(4.0, 0.0, 0.0)
-        vertical = Vector3(0.0, 2.0, 0.0)
-        origin = Vector3(0.0, 0.0, 0.0)
+    /// verticalFOV is the top to bottom in degrees
+    init(lookFrom: Vector3, lookAt: Vector3, viewUp: Vector3, verticalFOV: Scalar, aspect: Scalar) {
+        let u: Vector3
+        let v: Vector3
+        let w: Vector3
+        let theta = verticalFOV * Scalar(M_PI) / 180
+        let half_height = tan(theta/2)
+        let half_width = aspect * half_height
+
+        origin = lookFrom
+        w = (lookFrom - lookAt).unitVector()
+        u = viewUp.cross(w).unitVector()
+        v = w.cross(u)
+
+        lowerLeftCorner = origin - half_width*u - half_height*v - w
+        horizontal = 2*half_width*u
+        vertical = 2*half_height*v
     }
 
     func getRay(u: Scalar, v: Scalar) -> Ray {
