@@ -24,10 +24,6 @@ class Metal {
 
 extension Metal: Material {
 
-    func reflect(v: Vector3, n: Vector3) -> Vector3 {
-        return v - 2*v.dot(n) * n
-    }
-
     func scatter(ray: Ray, hitRecord: HitRecord, attenuation: inout Vector3, scattered: inout Ray) -> Bool {
         let reflected = reflect(v: ray.direction.unitVector(), n: hitRecord.normal)
         scattered = Ray(origin: hitRecord.p, direction: reflected + fuzz * randomInUnitSphere())

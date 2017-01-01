@@ -18,6 +18,7 @@
 		24239CF91E18708800EB596D /* Material.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CF81E18708800EB596D /* Material.swift */; };
 		24239CFC1E18714D00EB596D /* Lambertian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CFB1E18714D00EB596D /* Lambertian.swift */; };
 		24239CFE1E18752E00EB596D /* Metal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CFD1E18752E00EB596D /* Metal.swift */; };
+		24239D001E187C0B00EB596D /* Dialetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24239CFF1E187C0B00EB596D /* Dialetric.swift */; };
 		24A4A8E51E15FBAF002645E4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A4A8E41E15FBAF002645E4 /* main.swift */; };
 		24A4A8EC1E15FBC2002645E4 /* PixelArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24A4A8EB1E15FBC2002645E4 /* PixelArray.swift */; };
 /* End PBXBuildFile section */
@@ -46,6 +47,7 @@
 		24239CF81E18708800EB596D /* Material.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Material.swift; sourceTree = "<group>"; };
 		24239CFB1E18714D00EB596D /* Lambertian.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lambertian.swift; sourceTree = "<group>"; };
 		24239CFD1E18752E00EB596D /* Metal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Metal.swift; sourceTree = "<group>"; };
+		24239CFF1E187C0B00EB596D /* Dialetric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dialetric.swift; sourceTree = "<group>"; };
 		24A4A8E11E15FBAF002645E4 /* DBRaytracer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DBRaytracer; sourceTree = BUILT_PRODUCTS_DIR; };
 		24A4A8E41E15FBAF002645E4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		24A4A8EB1E15FBC2002645E4 /* PixelArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PixelArray.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				24239CF81E18708800EB596D /* Material.swift */,
 				24239CFB1E18714D00EB596D /* Lambertian.swift */,
 				24239CFD1E18752E00EB596D /* Metal.swift */,
+				24239CFF1E187C0B00EB596D /* Dialetric.swift */,
 			);
 			name = Material;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 				24239CF51E170BC600EB596D /* HitableList.swift in Sources */,
 				24239CFE1E18752E00EB596D /* Metal.swift in Sources */,
 				24239CEC1E15FEB700EB596D /* VectorMath+SceneKit.swift in Sources */,
+				24239D001E187C0B00EB596D /* Dialetric.swift in Sources */,
 				24239CFC1E18714D00EB596D /* Lambertian.swift in Sources */,
 				24A4A8EC1E15FBC2002645E4 /* PixelArray.swift in Sources */,
 				24239CEE1E16F29200EB596D /* Ray.swift in Sources */,

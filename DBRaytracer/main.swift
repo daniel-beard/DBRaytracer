@@ -32,6 +32,27 @@ func randomInUnitSphere() -> Vector3 {
     return p
 }
 
+func reflect(v: Vector3, n: Vector3) -> Vector3 {
+    return v - 2*v.dot(n) * n
+}
+
+func refract(v: Vector3, n: Vector3, ni_over_nt: Scalar, refracted: inout Vector3) -> Bool {
+    let uv = v.unitVector()
+    let dt = uv.dot(n)
+    let discriminant = 1.0 - ni_over_nt * ni_over_nt * (1 - dt*dt)
+    if discriminant > 0 {
+        refracted = ni_over_nt * (uv - n * dt) - n * sqrt(discriminant)
+        return true
+    }
+    return false
+}
+
+func schlick(cosine: Scalar, reflectiveIndex: Scalar) -> Scalar {
+    var r0 = (1-reflectiveIndex) / (1+reflectiveIndex)
+    r0 = r0*r0
+    return r0 + (1-r0) * pow((1-cosine), 5)
+}
+
 func colorFromRay(ray: Ray, world: Hitable, depth: Int) -> Vector3 {
 
     var hitRecord = HitRecord()
@@ -67,10 +88,18 @@ func ppmImage() -> String {
     var output = "P3\n\(width) \(height)\n\(maxColorValue)\n"
 
     let world = HitableList(array: [
-        Sphere(center: Vector3(0,0,-1), radius: 0.5, material: Lambertian(albedo: Vector3(0.8, 0.3, 0.3))),
-        Sphere(center: Vector3(0,-100.5,-1), radius: 100, material: Lambertian(albedo: Vector3(0.8, 0.8, 0.0))),
-        Sphere(center: Vector3(1,0,-1), radius: 0.5, material: Metal(albedo: Vector3(0.8, 0.6, 0.2), fuzz: 0.3)),
-        Sphere(center: Vector3(-1,0,-1), radius: 0.5, material: Metal(albedo: Vector3(0.8, 0.8, 0.8), fuzz: 0.1))
+        Sphere(center: Vector3(0,0,-1),
+               radius: 0.5,
+               material: Lambertian(albedo: Vector3(0.1, 0.2, 0.5))),
+        Sphere(center: Vector3(0,-100.5,-1),
+               radius: 100,
+               material: Lambertian(albedo: Vector3(0.8, 0.8, 0.0))),
+        Sphere(center: Vector3(1,0,-1),
+               radius: 0.5, material:
+            Metal(albedo: Vector3(0.8, 0.6, 0.2), fuzz: 0.3)),
+        Sphere(center: Vector3(-1,0,-1),
+               radius: -0.45,
+               material: Dialetric(reflectiveIndex: 1.5))
     ])
 
     let camera = Camera()
