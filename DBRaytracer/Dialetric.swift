@@ -35,10 +35,7 @@ extension Dialetric: Material {
             cosine = -ray.direction.dot(hitRecord.normal) / ray.direction.length
         }
 
-
-
         if refract(v: ray.direction, n: outwardNormal, ni_over_nt: ni_over_nt, refracted: &refracted) {
-
             reflectProb = schlick(cosine: cosine, reflectiveIndex: reflectiveIndex)
         } else {
             reflectProb = 1
