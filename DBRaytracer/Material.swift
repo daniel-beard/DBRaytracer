@@ -8,6 +8,8 @@
 
 import Foundation
 
-protocol Material {
-    func scatter(ray: Ray, hitRecord: HitRecord, attenuation: inout Vector3, scattered: inout Ray) -> Bool
+class Material {
+    func scatter(ray: Ray, hitRecord: HitRecord, attenuation: inout Vector3, scattered: inout Ray) -> Bool {
+        return false
+    }
 }

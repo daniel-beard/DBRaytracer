@@ -8,16 +8,14 @@
 
 import Foundation
 
-class Dialetric {
+final class Dialetric: Material {
     fileprivate let reflectiveIndex: Scalar
 
     init(reflectiveIndex: Scalar) {
         self.reflectiveIndex = reflectiveIndex
     }
-}
 
-extension Dialetric: Material {
-    func scatter(ray: Ray, hitRecord: HitRecord, attenuation: inout Vector3, scattered: inout Ray) -> Bool {
+    override func scatter(ray: Ray, hitRecord: HitRecord, attenuation: inout Vector3, scattered: inout Ray) -> Bool {
         var outwardNormal: Vector3
         let reflected = reflect(v: ray.direction, n: hitRecord.normal)
         var ni_over_nt: Scalar

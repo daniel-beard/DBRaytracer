@@ -34,6 +34,8 @@ struct HitRecord {
     }
 }
 
-protocol Hitable {
-    func hit(ray: Ray, t_min: Scalar, t_max: Scalar, hit_record: inout HitRecord) -> Bool
+class Hitable {
+    func hit(ray: Ray, t_min: Scalar, t_max: Scalar, hit_record: inout HitRecord) -> Bool {
+        return false
+    }
 }

@@ -8,16 +8,14 @@
 
 import Foundation
 
-class Lambertian {
+final class Lambertian: Material {
     fileprivate let albedo: Vector3
 
     init(albedo: Vector3) {
         self.albedo = albedo
     }
-}
 
-extension Lambertian: Material {
-    func scatter(ray: Ray, hitRecord: HitRecord, attenuation: inout Vector3, scattered: inout Ray) -> Bool {
+    override func scatter(ray: Ray, hitRecord: HitRecord, attenuation: inout Vector3, scattered: inout Ray) -> Bool {
         let target = hitRecord.p + hitRecord.normal + randomInUnitSphere()
         scattered = Ray(origin: hitRecord.p, direction: target - hitRecord.p)
         attenuation = albedo

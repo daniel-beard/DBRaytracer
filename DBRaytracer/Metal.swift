@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Metal {
+final class Metal: Material {
     fileprivate let albedo: Vector3
     fileprivate let fuzz: Scalar
 
@@ -20,14 +20,12 @@ class Metal {
             self.fuzz = 1
         }
     }
-}
 
-extension Metal: Material {
-
-    func scatter(ray: Ray, hitRecord: HitRecord, attenuation: inout Vector3, scattered: inout Ray) -> Bool {
+    override func scatter(ray: Ray, hitRecord: HitRecord, attenuation: inout Vector3, scattered: inout Ray) -> Bool {
         let reflected = reflect(v: ray.direction.unitVector(), n: hitRecord.normal)
         scattered = Ray(origin: hitRecord.p, direction: reflected + fuzz * randomInUnitSphere())
         attenuation = albedo
         return scattered.direction.dot(hitRecord.normal) > 0
     }
 }
+

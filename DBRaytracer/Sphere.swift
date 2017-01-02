@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Sphere {
+final class Sphere: Hitable {
 
     fileprivate let center: Vector3
     fileprivate let radius: Scalar
@@ -19,10 +19,8 @@ class Sphere {
         self.radius = radius
         self.material = material
     }
-}
 
-extension Sphere: Hitable {
-    func hit(ray: Ray, t_min: Scalar, t_max: Scalar, hit_record: inout HitRecord) -> Bool {
+    override func hit(ray: Ray, t_min: Scalar, t_max: Scalar, hit_record: inout HitRecord) -> Bool {
         let oc = ray.origin - center
         let a = ray.direction.dot(ray.direction)
         let b = oc.dot(ray.direction)

@@ -8,16 +8,14 @@
 
 import Foundation
 
-class HitableList {
+final class HitableList: Hitable {
     fileprivate let list: [Hitable]
 
     init(array: [Hitable]) {
         list = array
     }
-}
 
-extension HitableList: Hitable {
-    func hit(ray: Ray, t_min: Scalar, t_max: Scalar, hit_record: inout HitRecord) -> Bool {
+    override func hit(ray: Ray, t_min: Scalar, t_max: Scalar, hit_record: inout HitRecord) -> Bool {
         var hitAnything = false
         var closestSoFar: Scalar = t_max
         var tempHitRecord = HitRecord()
