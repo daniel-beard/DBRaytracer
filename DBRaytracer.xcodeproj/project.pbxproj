@@ -303,6 +303,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_DISABLE_SAFETY_CHECKS = NO;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -311,6 +312,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_DISABLE_SAFETY_CHECKS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

@@ -13,8 +13,14 @@ import Foundation
 // X-axis goes to the right
 // Z-axis is negative into the screen (right handed coordinate system)
 
+let width = 400
+let height = 200
+let samples = 100
 
 let FLOAT_MAX = Float.greatestFiniteMagnitude
+
+// Seed random numbers, so we can produce the same image.
+srand48(0)
 
 func frand48() -> Scalar {
     return Scalar(drand48())
@@ -128,38 +134,40 @@ func randomScene() -> HitableList {
 
 }
 
-func ppmImage() -> String {
+func renderRow(row: Int, world: Hitable, camera: Camera, pixels: PixelArray) {
+    let j = row
+    for i in 0..<width {
 
-    //TODO: Only for testing
-    let width = 200
-    let height = 100
-    let samples = 100
+        let si = Scalar(i)
+        let sj = Scalar(j)
 
-    // Seed random numbers, so we can produce the same image.
-    srand48(0)
+        var color = Vector3(0,0,0)
+        for _ in 0..<samples {
+            let u = (si + frand48()) / Scalar(width)
+            let v = (sj + frand48()) / Scalar(height)
+            let ray = camera.getRay(s: u, t: v)
+            //let p = ray.pointAtParameter(t: 2.0)
+            color = color + colorFromRay(ray: ray, world: world, depth: 0)
+        }
 
-    let maxColorValue = "255"
-    var output = "P3\n\(width) \(height)\n\(maxColorValue)\n"
+        color = color / Scalar(samples)
 
-//    let R = Scalar(cos(Scalar(M_PI)/4))
-//    let world = HitableList(array: [
-//        Sphere(center: Vector3(0,0,-1),
-//               radius: 0.5,
-//               material: Lambertian(albedo: Vector3(0.1, 0.2, 0.5))),
-//        Sphere(center: Vector3(0,-100.5,-1),
-//               radius: 100,
-//               material: Lambertian(albedo: Vector3(0.8, 0.8, 0.0))),
-//        Sphere(center: Vector3(1,0,-1),
-//               radius: 0.5, material:
-//            Metal(albedo: Vector3(0.8, 0.6, 0.2), fuzz: 0.3)),
-//        Sphere(center: Vector3(-1,0,-1),
-//               radius: -0.45,
-//               material: Dialetric(reflectiveIndex: 1.5))
-////        Sphere(center: Vector3(-R,0,-1), radius: R, material: Lambertian(albedo: Vector3(0,0,1))),
-////        Sphere(center: Vector3(R,0,-1), radius: R, material: Lambertian(albedo: Vector3(1,0,0))),
-//    ])
+        // gamma2, we want to raise the gamma by 1/2 to lighten up the image.
+        color = Vector3(sqrt(color.r()), sqrt(color.g()), sqrt(color.b()))
+        pixels[i, j] = color
+    }
+}
 
+func render() -> String {
+
+    // We treat this as an "embarrasingly" parallel problem, and render each image row separately
+    // Don't have to protect against concurrent writes, as we only write to each pixel from a single
+    // queue. Each queue handles multiple samples per pixel.
+    let operationQueue = OperationQueue()
+    operationQueue.maxConcurrentOperationCount = 16
+    operationQueue.isSuspended = true
     let world = randomScene()
+    let pixelArray = PixelArray(width: width, height: height)
 
     let lookFrom = Vector3(13,2,3)
     let lookAt = Vector3(0,0,0)
@@ -173,39 +181,18 @@ func ppmImage() -> String {
                         aperture: aperture,
                         focusDistance: distToFocus)
     for j in (0..<height).reversed() {
-        for i in 0..<width {
-
-            let si = Scalar(i)
-            let sj = Scalar(j)
-
-            var color = Vector3(0,0,0)
-            for _ in 0..<samples {
-                let u = (si + frand48()) / Scalar(width)
-                let v = (sj + frand48()) / Scalar(height)
-                let ray = camera.getRay(s: u, t: v)
-                //let p = ray.pointAtParameter(t: 2.0)
-                color = color + colorFromRay(ray: ray, world: world, depth: 0)
-            }
-
-            color = color / Scalar(samples)
-
-            // gamma2, we want to raise the gamma by 1/2 to lighten up the image.
-            color = Vector3(sqrt(color.r()), sqrt(color.g()), sqrt(color.b()))
-            let colorArray = color.toArray()
-
-            let ir = Int(255.99*colorArray[0])
-            let ig = Int(255.99*colorArray[1])
-            let ib = Int(255.99*colorArray[2])
-
-            output += "\(ir) \(ig) \(ib)\n"
+        operationQueue.addOperation {
+            print("Rendering row: \(j)")
+            renderRow(row: j, world: world, camera: camera, pixels: pixelArray)
         }
     }
-
-    return output
+    operationQueue.isSuspended = false
+    operationQueue.waitUntilAllOperationsAreFinished()
+    return pixelArray.ppmImage()
 }
 
 let startDate = Date()
-let image = ppmImage()
+let image = render()
 try! image.write(toFile: "/Users/dbeard/output.ppm", atomically: true, encoding: .ascii)
 let endDate = Date()
 let timeInterval = endDate.timeIntervalSince(startDate)
